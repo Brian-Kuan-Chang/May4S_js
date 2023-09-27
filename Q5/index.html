@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Multiple Selection</title>
+</head>
+
+<body>
+
+  <h1>Multiple Selection Example</h1>
+
+  <div style="display: flex;">
+    <select id="leftSelect" multiple style="width: 200px;">
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+      <option value="E">E</option>
+    </select>
+
+    <div style="margin: 0 20px;">
+      <button onclick="moveToRight()"> > </button>
+      <br><br>
+      <button onclick="moveToLeft()">
+        < </button>
+    </div>
+
+    <select id="rightSelect" multiple style="width: 200px;">
+    </select>
+  </div>
+
+  <button onclick="showSelected()">Show Selected</button>
+
+  <script>
+    function moveToRight() {
+      const leftSelect = document.getElementById('leftSelect');
+      const rightSelect = document.getElementById('rightSelect');
+      for (const option of leftSelect.selectedOptions) {
+        rightSelect.add(new Option(option.text, option.value));
+        leftSelect.remove(option.index);
+      }
+      sortSelect(rightSelect)
+    }
+
+    function moveToLeft() {
+      const leftSelect = document.getElementById('leftSelect');
+      const rightSelect = document.getElementById('rightSelect');
+      for (const option of rightSelect.selectedOptions) {
+        leftSelect.add(new Option(option.text, option.value));
+        rightSelect.remove(option.index);
+      }
+      sortSelect(leftSelect);
+    }
+
+    function showSelected() {
+      const rightSelect = document.getElementById('rightSelect');
+      const selectedValues = Array.from(rightSelect.options).map(option => option.value).join('、');
+      alert(`已挑選${selectedValues}`);
+    }
+    function sortSelect(selectElement) {
+      const options = Array.from(selectElement.options);
+      options.sort((a, b) => a.text.localeCompare(b.text));
+      selectElement.innerHTML = '';
+      for (const option of options) {
+        selectElement.add(option);
+      }
+    }
+  </script>
+
+</body>
+
+</html>
